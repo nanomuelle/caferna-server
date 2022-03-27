@@ -25,6 +25,7 @@ exports.GOODS = {
     COW: 'cow',
 
     CAVERN_TUNNEL_OR_CAVERN_CAVERN: 'CC/CT',
+    CAVERN_CAVERN: 'CC/CT',
     CAVERN_CAVERN: 'CC',
     CAVERN_TUNNEL: 'CT',
     MEADOW_FIELD: 'MF',

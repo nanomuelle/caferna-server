@@ -5,8 +5,5 @@ exports.AbstractAction = class {
     }
 
     replenish() {}
-
-    use(dwarf) {
-        this.dwarf = dwarf;
-    }
+    use(dwarf, params) {}
 }

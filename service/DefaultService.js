@@ -104,8 +104,9 @@ exports.listGames = function () {
 /**
  * Use space
  */
-exports.useSpace = function (gameId, spaceId, playerId, dwarfId) {
-    console.log("service useSpace", gameId, spaceId, playerId, dwarfId);
+exports.useSpace = function (gameId, body) {
+    const { spaceId, playerId, dwarfId, actions } = body;
+    console.log("service useSpace", gameId, body);
     return new Promise(function (resolve, reject) {
         const gm = getGameById(gameId);
         if (!gm) {
@@ -131,11 +132,13 @@ exports.useSpace = function (gameId, spaceId, playerId, dwarfId) {
         }
 
         // TODO: create logic to assert that the movement is valid
-        space.place(dwarf);
+        space.use(dwarf, actions);
 
         console.log(space);
+        console.log(player);
+
         // response
-        resolve(createSpaceResponse(space));
+        resolve(createPlayerResponse(player));
     });
 }
 
@@ -144,6 +147,7 @@ function createMockInitialData() {
     const gm = new GameManager();
     games.push(gm);
     gm.init(games.length, 4);
+    gm.replenishPhase();
 }
 
 createMockInitialData();

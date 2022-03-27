@@ -3,8 +3,8 @@
 var utils = require('../utils/writer.js');
 var Default = require('../service/DefaultService');
 
-module.exports.createGame = function createGame (req, res, next, body) {
-  Default.createGame(body)
+module.exports.createGame = function createGame (req, res, next) {
+  Default.createGame()
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -44,13 +44,14 @@ module.exports.listGamePlayers = function listGamePlayers (req, res, next, gameI
         });
 };
 
-module.exports.useSpace = function useSpace (req, res, next, gameId, spaceId, playerId, dwarfId) {
-    Default.useSpace(gameId, spaceId, playerId, dwarfId)
+module.exports.useSpace = function useSpace (req, res, next, body, gameId) {
+    Default.useSpace(gameId, body)
         .then(function (response) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            res.send(405, response);
+            //res.send(405, response);
+            res.status(405).send(response)
             // utils.writeJson(res, response);
         });
 };

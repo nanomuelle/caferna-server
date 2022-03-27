@@ -20,10 +20,14 @@ exports.Space = class {
     }
 
     useAction(index, params) {
+        console.log("useAction", index, params, this.actions[index]);
         this.actions[index].use(this.dwarf, params);
     }
 
-    place(dwarf) {
+    use(dwarf, actions = []) {
         this.dwarf = dwarf;
+        actions.forEach(
+            ({index, params}) => this.useAction(index, params)
+        )
     }
 }

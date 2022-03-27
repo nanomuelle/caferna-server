@@ -30,28 +30,37 @@ exports.Player = class {
             [GOODS.COW]: 0,
 
             /* UNPLACED TILES */
-            [GOODS.CAVERN_CAVERN]: 0,
-            [GOODS.CAVERN_TUNNEL]: 0,
-            [GOODS.MEADOW_FIELD]: 0,
-            [GOODS.DEEP_TUNNEL_ORE_MINE]: 0,
-            [GOODS.RUBY_MINE]: 0,
-            [GOODS.CAVERN]: 0,
-            [GOODS.TUNNEL]: 0,
-            [GOODS.MEADOW]: 0,
-            [GOODS.FIELD]: 0,
+            // [GOODS.CAVERN_CAVERN]: 0,
+            // [GOODS.CAVERN_TUNNEL]: 0,
+            // [GOODS.MEADOW_FIELD]: 0,
+            // [GOODS.DEEP_TUNNEL_ORE_MINE]: 0,
+            // [GOODS.RUBY_MINE]: 0,
+            // [GOODS.CAVERN]: 0,
+            // [GOODS.TUNNEL]: 0,
+            // [GOODS.MEADOW]: 0,
+            // [GOODS.FIELD]: 0,
 
-            [GOODS.NEW_BORN]: 0,
+            // [GOODS.NEW_BORN]: 0,
         };
 
         this.dwarfs = [
-            new Dwarf(this, `${ this.id }1`, false),
-            new Dwarf(this, `${ this.id }2`, false)
+            new Dwarf(this, `${ this.id }1`),
+            new Dwarf(this, `${ this.id }2`)
         ];
+        this.dwarfs.forEach(dwarf => dwarf.state = Dwarf.STATE.READY);
 
         this.forest = new Forest(this);
         this.mountain = new Mountain(this);
 
 //        this._isInitialPlayer = isInitial;
+    }
+
+    isInitial() {
+        return this.game.initialPlayerId === this.id;
+    }
+
+    hasTurn() {
+        return this.game.turnPlayerId === this.id;
     }
 
     getDwarfById(dwarfId) {

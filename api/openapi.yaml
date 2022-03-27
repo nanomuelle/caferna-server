@@ -6,7 +6,7 @@ servers:
 - url: https://api.server.test/v1
 - url: http://localhost:8080
 paths:
-  /game:
+  /games:
     get:
       summary: List Games
       operationId: listGames
@@ -49,7 +49,7 @@ paths:
         - write:game
         - read:game
       x-swagger-router-controller: Default
-  /game/{gameId}/space:
+  /games/{gameId}/spaces:
     get:
       summary: List Game Spaces
       operationId: listGameSpaces
@@ -72,7 +72,7 @@ paths:
         - write:games
         - read:games
       x-swagger-router-controller: Default
-  /game/{gameId}/player:
+  /games/{gameId}/players:
     get:
       summary: List Game Players
       operationId: listGamePlayers
@@ -95,15 +95,39 @@ paths:
         - write:games
         - read:games
       x-swagger-router-controller: Default
-  /game/{gameId}/space/{spaceId}/player/{playerId}/dwarf/{dwarfId}:
+  # /game/{gameId}/space/{spaceId}/player/{playerId}/dwarf/{dwarfId}:
+  /games/{gameId}/players/{playerId}:
+    get:
+      summary: List Game Players
+      operationId: listGamePlayers
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/playerId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlayerDetail'
+                x-content-type: application/json
+        "400":
+          description: Invalid status value
+      security:
+      - caferna_auth:
+        - write:games
+        - read:games
+      x-swagger-router-controller: Default
+  /games/{gameId}/use-space:
     post:
-      summary: Player use dwarf in a space
+      summary: Use space
       operationId: useSpace
       parameters:
         - $ref: '#/components/parameters/gameId'
-        - $ref: '#/components/parameters/spaceId'
-        - $ref: '#/components/parameters/playerId'
-        - $ref: '#/components/parameters/dwarfId'
+      requestBody:
+        $ref: '#/components/requestBodies/UseSpace'
       responses:
         "200":
           description: Dwarf successfully placed on space
@@ -112,7 +136,7 @@ paths:
               schema:
                 type: object
                 items:
-                  $ref: '#/components/schemas/Space'
+                  $ref: '#/components/schemas/Player'
                 x-content-type: application/json
         "405":
           description: Invalid input
@@ -131,6 +155,7 @@ components:
       schema:
         type: integer
         format: int32
+      example: 1
     spaceId:
       name: spaceId
       in: path
@@ -153,6 +178,13 @@ components:
       schema:
         type: string
   schemas:
+    ActionParameters:
+      type: object
+      properties:
+        index:
+          type: integer
+        params:
+          type: object
     Dwarf:
       type: object
       properties:
@@ -160,9 +192,16 @@ components:
           type: string
         weapon:
           type: integer
-          format: int32
         isNewBorn:
           type: boolean
+    Forest:
+      type: array
+      items:
+        $ref: '#/components/schemas/ForestTile'
+    Mountain:
+      type: array
+      items:
+        $ref: '#/components/schemas/MountainTile'
     Player:
       type: object
       properties:
@@ -170,12 +209,155 @@ components:
           type: string
         color:
           type: string
-        isInitialPlayer:
+        isInitial:
+          type: boolean
+        hasTurn:
           type: boolean
         dwarfs:
           type: array
           items:
             $ref: '#/components/schemas/Dwarf'
+    PlayerDetail:
+      allOf:     # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Player'
+      type: object
+      required:
+        - rootCause
+      properties:
+        goods:
+          type: object
+          $ref: '#/components/schemas/Goods'
+        forest:
+          type: object
+          $ref: '#/components/schemas/Forest'
+        mountain:
+          type: object
+          $ref: '#/components/schemas/Mountain'
+    Animal:
+      type: object
+      properties:
+        location:
+          type: string
+          enum: ['forest', 'mountain']
+        cell:
+          type: integer
+    AnimalDog:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+      type: object
+      properties:
+        class:
+          type: string
+          enum: ['dog']
+    AnimalSheep:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+      type: object
+      properties:
+        class:
+          type: string
+          enum: ['sheep']
+    AnimalBoar:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+      type: object
+      properties:
+        class:
+          type: string
+          enum: ['boar']
+    AnimalDonkey:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+      type: object
+      properties:
+        class:
+          type: string
+          enum: ['donkey']
+    AnimalCow:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+      type: object
+      properties:
+        class:
+          type: string
+          enum: ['cow']
+    ForestTile:
+      type: object
+      properties:
+        name:
+          # x -> Outer forest
+          # F -> Forest
+          # < -> Cavern entry
+          # m -> Meadow
+          # . -> Field
+          # b -> Forest with 1 boar
+          # f -> Forest with 1 food
+          # p -> Little Pasture
+          # tp -> Big Pasture top
+          # rp -> Big Pasture right
+          # bp -> Big Pasture bottom
+          # lp -> Big Pasture left
+          type: string
+          enum: ['x', 'F', '<', 'm', '.', 'b', 'f', 'p', 'tp', 'rp', 'bp', 'lp']
+        cell:
+          type: integer
+    MountainTile:
+      type: object
+      properties:
+        class:
+          # x -> Outer mountain
+          # M -> Mountain
+          # C -> Cavern
+          # T -> Tunnel
+          # D -> Deep Tunnel
+          # O -> Ore Mine
+          # R -> Ruby Mine
+          type: string
+          enum: ['x', 'M', 'C', 'T', 'D', 'O', 'R']
+        cell:
+          type: integer
+    Goods:
+      type: object
+      properties:
+        stone:
+          type: integer
+        wood:
+          type: integer
+        ore:
+          type: integer
+        ruby:
+          type: integer
+        food:
+          type: integer
+        gold:
+          type: integer
+        grain:
+          type: integer
+        veggy:
+          type: integer
+        animals:
+          type: object
+          properties:
+            dogs:
+              type: array
+              items:
+                $ref: '#/components/schemas/AnimalDog'
+            sheeps:
+              type: array
+              items:
+                $ref: '#/components/schemas/AnimalSheep'
+            boars:
+              type: array
+              items:
+                $ref: '#/components/schemas/AnimalBoar'
+            donkeys:
+              type: array
+              items:
+                $ref: '#/components/schemas/AnimalDonkey'
+            cows:
+              type: array
+              items:
+                $ref: '#/components/schemas/AnimalCow'
     Space:
       type: object
       properties:
@@ -220,6 +402,35 @@ components:
         id: 0
         numPlayers: 6
   requestBodies:
+    UseSpace:
+      description: Params object to use the space
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              spaceId:
+                type: string
+                example: 'drift-mining'
+              playerId:
+                type: string
+                example: 'A'
+              dwarfId:
+                type: string
+                example: 'A1'
+              actions:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionParameters'
+                example:
+                  -
+                    index: 0
+                  -
+                    index: 1
+                    params:
+                      name: 'CT'
+                      cell: 3
+                      direction: 'r'
     Game:
       description: Game object that needs to be created
       content:

@@ -16,7 +16,7 @@ exports.GoodsAction = class extends AbstractAction {
         });
     }
 
-    use(dwarf) {
+    use(dwarf, params) {
         super.use(dwarf);
 
         const { player } = dwarf;
