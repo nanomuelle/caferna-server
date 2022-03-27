@@ -1,6 +1,6 @@
 "use strict";
 
-const { GameManager } = require("./logic/game-manager");
+const { GameManager } = require("../logic/game-manager");
 
 const games = [];
 
