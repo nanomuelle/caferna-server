@@ -1,6 +1,6 @@
 const { FixedGood } = require('../fixed-good.js');
 const { GOODS, NEXUS } = require('../../constants.js');
-const { Space } = require('./abstract-space.js');
+const { Space } = require('./space.js');
 const { GoodsAction } = require('../../actions/goods-action.js');
 const { FurnishCavernAction } = require('../../actions/furnish-cavern-action.js');
 

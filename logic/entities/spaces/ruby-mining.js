@@ -1,4 +1,4 @@
-const { Space } = require('./abstract-space.js');
+const { Space } = require('./space.js');
 const { RubyMiningAction } = require('../../actions/ruby-mining-action.js');
 
 exports.RubyMining = class extends Space {

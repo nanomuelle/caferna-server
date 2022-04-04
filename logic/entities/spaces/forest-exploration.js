@@ -1,7 +1,7 @@
 const { StockableGood } = require('../stockable-good.js');
 const { FixedGood } = require('../fixed-good.js');
 const { GOODS } = require('../../constants.js');
-const { Space } = require('./abstract-space.js');
+const { Space } = require('./space.js');
 const { GoodsAction } = require('../../actions/goods-action.js');
 
 exports.ForestExploration = class extends Space {
@@ -14,4 +14,16 @@ exports.ForestExploration = class extends Space {
 
         this.actions.push(action1);
     }
+
+
+    /**
+     * Use Forest exploration space
+     *
+     * @param {*} dwarf             // dwarf used to execute de space actions
+     * @param {*} spaceParams    // not used
+     *
+     */
+     use(dwarf, spaceParams) {
+        super.use(dwarf, { params: [ { index: 0 } ]} );
+   }
 }

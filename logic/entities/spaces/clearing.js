@@ -1,7 +1,7 @@
 const { StockableGood } = require('../stockable-good.js');
 const { FixedGood } = require('../fixed-good.js');
 const { NEXUS, GOODS } = require('../../constants.js');
-const { Space } = require('./abstract-space.js');
+const { Space } = require('./space.js');
 const { GoodsAction } = require('../../actions/goods-action.js');
 
 exports.Clearing = class extends Space {

@@ -1,6 +1,6 @@
 const { StockableGood } = require('../stockable-good.js');
 const { NEXUS, GOODS } = require('../../constants.js');
-const { Space } = require('./abstract-space.js');
+const { Space } = require('./space.js');
 const { StableAction } = require('../../actions/stable-action.js');
 const { LittleFenceAction } = require('../../actions/little-fence-action.js');
 const { BigFenceAction } = require('../../actions/big-fence-action.js');

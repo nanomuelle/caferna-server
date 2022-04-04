@@ -1,7 +1,7 @@
 const { StockableGood } = require('../stockable-good.js');
 const { FixedGood } = require('../fixed-good.js');
 const { GOODS } = require('../../constants.js');
-const { Space } = require('./abstract-space.js');
+const { Space } = require('./space.js');
 const { GoodsAction } = require('../../actions/goods-action.js');
 const { InitialPlayerAction } = require('../../actions/initial-player-action.js');
 

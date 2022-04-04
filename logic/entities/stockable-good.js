@@ -26,6 +26,6 @@ exports.StockableGood = class {
     obtainStock() {
         const good = new FixedGood(this.name, this._stock);
         this._stock = 0;
-        return good;
+        return good.obtainStock();
     }
 }

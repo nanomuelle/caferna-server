@@ -1,7 +1,7 @@
 const { ExpeditionAction } = require('../../actions/expedition-action.js');
 const { ForgeAction } = require('../../actions/forge-action.js');
 const { NEXUS } = require('../../constants.js');
-const { Space } = require('./abstract-space.js');
+const { Space } = require('./space.js');
 
 exports.Blacksmithing = class extends Space {
     constructor() {

@@ -2,7 +2,7 @@ const { AbstractAction } = require('./abstract-action.js');
 
 exports.GoodsAction = class extends AbstractAction {
     constructor() {
-        super();
+        super('goods-action');
         this.goods = [];
     }
 
@@ -16,9 +16,10 @@ exports.GoodsAction = class extends AbstractAction {
         });
     }
 
-    use(dwarf, params) {
-        super.use(dwarf);
+    use(dwarf, actionParams) {
+        console.log('goods-action', dwarf.id, actionParams);
 
+        super.use(dwarf, actionParams);
         const { player } = dwarf;
         if (this.goods) {
             this.goods.forEach(good => player.addGood(good.obtainStock()));

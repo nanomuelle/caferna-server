@@ -1,18 +1,17 @@
-exports.Forest = class {
-    constructor(player) {
-        this.player = player;
-        this.cells = [
-            'x', 'x', 'x', 'x', 
-            'x', 'F', 'F', 'b',
-            'x', 'F', 'F', 'F',
-            'x', 'b', 'F', 'F',
-            'x', 'F', 'f', '<',
-            'x', 'x', 'x', 'x',
-        ];
-    }
+const { Board } = require('./board.js');
+const { Tile, TILE_NAME } = require('./tile.js');
 
-    placeTile(tile, index) {
-        // TODO: implement logic to avoid illegal moves
-        this.cells[index] = tile.name;
+const INITIAL_FOREST_CONFIGURATION = [
+    TILE_NAME.x, TILE_NAME.x, TILE_NAME.x, TILE_NAME.x, 
+    TILE_NAME.x, TILE_NAME.F, TILE_NAME.F, TILE_NAME.b,
+    TILE_NAME.x, TILE_NAME.F, TILE_NAME.F, TILE_NAME.F,
+    TILE_NAME.x, TILE_NAME.b, TILE_NAME.F, TILE_NAME.F,
+    TILE_NAME.x, TILE_NAME.F, TILE_NAME.r, TILE_NAME.E,
+    TILE_NAME.x, TILE_NAME.x, TILE_NAME.x, TILE_NAME.x,
+];
+
+exports.Forest = class extends Board{
+    constructor(player) {
+        super(player, INITIAL_FOREST_CONFIGURATION);
     }
 }

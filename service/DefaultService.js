@@ -30,6 +30,26 @@ const createPlayerResponse = player => ({
     dwarfs: player.dwarfs.map(createDwarfResponse)
 });
 
+const createGoodsResponse = goods => ({
+    goods
+});
+
+const createForestResponse = forest => ({
+    forest: forest.serialize()
+});
+
+const createMountainResponse = mountain => ({
+    mountain: mountain.serialize()
+});
+
+const createPlayerDetailResponse = player => ({
+    ...createPlayerResponse(player),
+    ...createGoodsResponse(player.goods),
+    ...createForestResponse(player.forest),
+    ...createMountainResponse(player.mountain)
+    }
+);
+
 const createDwarfResponse = dwarf => ({
     id: dwarf.id,
     weapon: dwarf.weapon,
@@ -105,40 +125,43 @@ exports.listGames = function () {
  * Use space
  */
 exports.useSpace = function (gameId, body) {
-    const { spaceId, playerId, dwarfId, actions } = body;
-    console.log("service useSpace", gameId, body);
+    console.log('DefaultService.useSpace');
+    const { spaceId, playerId, dwarfId, spaceParams } = body;
     return new Promise(function (resolve, reject) {
         const gm = getGameById(gameId);
         if (!gm) {
             reject(`Game #${ gameId } not found`);
             return;
         }
+        console.log('  gameId ok', gameId);
 
         const space = gm.getSpaceById(spaceId);
         if (!space) {
             reject(`Space #${ spaceId } not found in game #${ gameId }`);
             return;
         }
+        console.log('  space ok', spaceId);
 
         const player = gm.getPlayerById(playerId);
         if (!player) {
             reject(`Player #${ playerId } not found in game #${ gameId }`);
             return;
         }
+        console.log('  player ok', playerId);
 
         const dwarf = player.getDwarfById(dwarfId);
         if (!dwarf) {
             reject(`Dwarf #${ dwarfId } not found in player #${ playerId} in game #${ gameId }`);
         }
+        console.log('  dwarf ok', dwarfId);
 
         // TODO: create logic to assert that the movement is valid
-        space.use(dwarf, actions);
-
-        console.log(space);
-        console.log(player);
+        space.use(dwarf, spaceParams);
 
         // response
-        resolve(createPlayerResponse(player));
+        resolve(createPlayerDetailResponse(player));
+
+        console.log(player.toAscii());
     });
 }
 
@@ -148,6 +171,9 @@ function createMockInitialData() {
     games.push(gm);
     gm.init(games.length, 4);
     gm.replenishPhase();
+
+    // arm a dwarf for test purposes
+    gm.players[0].dwarfs[0].weapon = 1;
 }
 
 createMockInitialData();

@@ -14,4 +14,8 @@ exports.Dwarf = class {
         this.weapon = 0;
         this.state = this.constructor.STATE.NEW_BORN;
     }
+
+    increaseWeapon() {
+        this.weapon += 1;
+    }
 }

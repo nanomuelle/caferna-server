@@ -9,6 +9,10 @@ exports.FixedGood = class {
     }
 
     obtainStock() {
-        return this;
+        console.log('FixedGood.obtainStock', this.name, this.stock);
+        return ({
+            name: this.name,
+            stock: this.stock
+        });
     }
 }

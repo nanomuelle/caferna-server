@@ -3,8 +3,8 @@ info:
   title: caferna
   version: "1.0.0"
 servers:
-- url: https://api.server.test/v1
 - url: http://localhost:8080
+- url: https://api.server.test/v1
 paths:
   /games:
     get:
@@ -49,7 +49,7 @@ paths:
         - write:game
         - read:game
       x-swagger-router-controller: Default
-  /games/{gameId}/spaces:
+  /spaces/{gameId}:
     get:
       summary: List Game Spaces
       operationId: listGameSpaces
@@ -72,7 +72,7 @@ paths:
         - write:games
         - read:games
       x-swagger-router-controller: Default
-  /games/{gameId}/players:
+  /players/{gameId}:
     get:
       summary: List Game Players
       operationId: listGamePlayers
@@ -96,10 +96,10 @@ paths:
         - read:games
       x-swagger-router-controller: Default
   # /game/{gameId}/space/{spaceId}/player/{playerId}/dwarf/{dwarfId}:
-  /games/{gameId}/players/{playerId}:
+  /players/{gameId}/{playerId}:
     get:
-      summary: List Game Players
-      operationId: listGamePlayers
+      summary: Player detail
+      operationId: getPlayer
       parameters:
         - $ref: '#/components/parameters/gameId'
         - $ref: '#/components/parameters/playerId'
@@ -120,7 +120,7 @@ paths:
         - write:games
         - read:games
       x-swagger-router-controller: Default
-  /games/{gameId}/use-space:
+  /use-space/{gameId}:
     post:
       summary: Use space
       operationId: useSpace
@@ -136,7 +136,7 @@ paths:
               schema:
                 type: object
                 items:
-                  $ref: '#/components/schemas/Player'
+                  $ref: '#/components/schemas/PlayerDetail'
                 x-content-type: application/json
         "405":
           description: Invalid input
@@ -183,7 +183,7 @@ components:
       properties:
         index:
           type: integer
-        params:
+        actionParams:
           type: object
     Dwarf:
       type: object
@@ -225,13 +225,10 @@ components:
         - rootCause
       properties:
         goods:
-          type: object
           $ref: '#/components/schemas/Goods'
         forest:
-          type: object
           $ref: '#/components/schemas/Forest'
         mountain:
-          type: object
           $ref: '#/components/schemas/Mountain'
     Animal:
       type: object
@@ -371,7 +368,6 @@ components:
         nexus:
           type: string
         dwarf:
-          type: object
           $ref: '#/components/schemas/Dwarf'
     Game:
       type: object
@@ -411,26 +407,68 @@ components:
             properties:
               spaceId:
                 type: string
-                example: 'drift-mining'
               playerId:
                 type: string
-                example: 'A'
               dwarfId:
                 type: string
-                example: 'A1'
-              actions:
+              spaceParams:
                 type: array
                 items:
                   $ref: '#/components/schemas/ActionParameters'
-                example:
+          examples:
+            Logging:
+              summary: Logging use example
+              value:
+                spaceId: logging
+                playerId: A
+                dwarfId: A1
+                spaceParams:
                   -
                     index: 0
                   -
                     index: 1
-                    params:
-                      name: 'CT'
-                      cell: 3
-                      direction: 'r'
+                    actionParams:
+                      rewards:
+                        -
+                          id: '1+' # See expedition-action
+                        # -
+                        #   id: '7h'
+                        #   params:
+                        #     cell: 12
+                        #     furnishId: 'dwelling'
+            DriftMining:
+              summary: DriftMining use example
+              value:
+                spaceId: drift-mining
+                playerId: A
+                dwarfId: A1
+                spaceParams:
+                  -
+                    index: 0
+                  -
+                    index: 1
+                    actionParams:
+                      name: CT
+                      cell: 17
+                      direction: t
+            Imitation:
+              summary: Imitation use example
+              value:
+                spaceId: imitation
+                playerId: A
+                dwarfId: A1
+                spaceParams:
+                  -
+                    spaceId: drift-mining
+                    spaceParams:
+                      -
+                        index: 0
+                      -
+                        index: 1
+                        actionParams:
+                          name: CT
+                          cell: 17
+                          direction: t
     Game:
       description: Game object that needs to be created
       content:

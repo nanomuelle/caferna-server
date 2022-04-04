@@ -1,19 +1,16 @@
-exports.Mountain = class {
-    constructor(player) {
-        this.player = player;
-        this.cells = [
-            'x', 'x', 'x', 'x', 
-            'M', 'M', 'F', 'x',
-            'M', 'M', 'M', 'x',
-            'C', 'M', 'M', 'x',
-            'I', 'f', 'M', 'x',
-            'x', 'x', 'x', 'x'
-        ];
-    }
+const { Board } = require('./board.js');
+const { TILE_NAME } = require('./tile.js');
 
-    placeTile(tile, index) {
-        console.log('Mountain.placeTile', tile, index);
-        // TODO: implement logic to avoid illegal moves
-        this.cells[index] = tile.name;
+const INITIAL_MOUNTAIN_CONFIGURATION = [
+    TILE_NAME.X, TILE_NAME.X, TILE_NAME.X, TILE_NAME.X,
+    TILE_NAME.M, TILE_NAME.M, TILE_NAME.L, TILE_NAME.X,
+    TILE_NAME.M, TILE_NAME.M, TILE_NAME.M, TILE_NAME.X,
+    TILE_NAME.C, TILE_NAME.M, TILE_NAME.M, TILE_NAME.X,
+    TILE_NAME.I, TILE_NAME.l, TILE_NAME.M, TILE_NAME.X,
+    TILE_NAME.X, TILE_NAME.X, TILE_NAME.X, TILE_NAME.X
+];
+exports.Mountain = class extends Board {
+    constructor(player) {
+        super(player, INITIAL_MOUNTAIN_CONFIGURATION);
     }
 }
