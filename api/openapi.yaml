@@ -429,13 +429,20 @@ components:
                     index: 1
                     actionParams:
                       rewards:
-                        -
-                          id: '1+' # See expedition-action
                         # -
-                        #   id: '7h'
+                        #   id: '1+' # See expedition-action
+                        # -
+                        #   id: '1W' # See expedition-action
+                        # -
+                        #   id: '1d'
                         #   params:
-                        #     cell: 12
-                        #     furnishId: 'dwelling'
+                        #     board: 'forest'
+                        #     cell: 5
+                        -
+                          id: '7h'
+                          params:
+                            cell: 12
+                            furnishId: 'dwelling'
             DriftMining:
               summary: DriftMining use example
               value:

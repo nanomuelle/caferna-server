@@ -1,4 +1,5 @@
 const { GOODS } = require('../constants.js');
+const { TileFactory } = require('../tile-factory.js');
 const { Dwarf } = require('./dwarf.js');
 const { Forest } = require('./forest.js');
 const { Mountain } = require('./mountain.js');
@@ -96,13 +97,16 @@ exports.Player = class {
     }
 
     _placeTile(tile, cellIndex) {
-        console.log('Player.placeTile', tile, cellIndex);
+        // console.log('Player._placeTile', tile.name, cellIndex);
         const board = tile.isForest ? this.forest : this.mountain;
         board.placeTile(tile, cellIndex);
     }
 
     placeTileByName(tileName, cellIndex) {
-        this._placeTile(new Tile(tileName), cellIndex);
+        this._placeTile(
+            TileFactory.create(this, tileName), 
+            cellIndex
+        );
     }
 
     placeTweenTileByName(name, cell, direction) {
@@ -134,18 +138,20 @@ exports.Player = class {
     }
 
     placeFurnish(id, cellIndex) {
-        console.log('Player.placeFurnish TODO: STILL NOT IMPLEMENTED!!!!!');
-        const cell = this.mountain.cells[cellIndex];
-        cell.tile = new Tile(id);
+        this.placeTileByName(id, cellIndex);
+    }
+
+    placeDwelling(id, cellIndex) {
+        this.placeTileByName(id, cellIndex);
     }
 
     placeStable(cellIndex) {
-        const cell = this.forest.cells[cellIndex];
-        cell.hasStable = true;
+        this.forest.placeStable(cellIndex);
     }
 
     sow(crops) {
-        console.log('Player.sow TODO: STILL NOT IMPLEMENTED!!!!!!');
+        // console.log('Player.sow TODO: STILL NOT IMPLEMENTED!!!!!!');
+        crops.forEach(crop => this.forest.sow(crop));
     }
 
     breedFarmAnimals(type1, type2) {
@@ -174,18 +180,31 @@ exports.Player = class {
     //     return false;
     // }
 
+    _animalSummaryTemplate() {
+        const animals = [
+            [GOODS.DOG, 'dog' ],
+            [GOODS.SHEEP, 'sheep' ],
+            [GOODS.BOAR, 'boar' ],
+            [GOODS.DONKEY, 'donkey' ],
+            [GOODS.COW, 'cow'],
+        ];
+        return animals.reduce( 
+            (acc, [key, label]) => `${ acc }${ label }: ${ this.numberOfAnimals(key) }  `, 
+            ''
+        );
+    }
+
     toAscii() {
         const forestRows = this.forest.toAscii().split('\n');
         const mountainRows = this.mountain.toAscii().split('\n');
         return `
----------------------------------------------
+------------------------------------------------------------------------------------------
 Player ${ this.id }
   dwarfs: ${ Object.keys(this.dwarfs).map(key => `${ this.dwarfs[key].id }[${ this.dwarfs[key].weapon }]`).join('  ') }
-    ${ Object.keys(this.goods).map(key => `${ key }: ${ this.goods[key] }`).join('  ') }
-    ${ forestRows.map( (forestRow, index) => `${ forestRow } ${ mountainRows[index]}`).join('\n') }
-
-  dogs: ${ this.numberOfAnimals(GOODS.DOG) } sheep: ${ this.numberOfAnimals(GOODS.SHEEP) }
----------------------------------------------
+  ${ Object.keys(this.goods).map(key => `${ key }: ${ this.goods[key] }`).join('  ') }
+  ${ this._animalSummaryTemplate() }
+${ forestRows.map( (forestRow, index) => `${ forestRow } ${ mountainRows[index]}`).join('\n') }
+------------------------------------------------------------------------------------------
 `;
     }
 }

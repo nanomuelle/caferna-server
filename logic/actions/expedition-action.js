@@ -1,6 +1,5 @@
 const { AbstractAction } = require('./abstract-action.js');
-const { GOODS } = require('../constants.js');
-const { TILE_NAME } = require('../entities/tile.js');
+const { GOODS, TILE_NAME } = require('../constants.js');
 const { FixedGood } = require('../entities/fixed-good.js');
 
 exports.ExpeditionAction = class extends AbstractAction {

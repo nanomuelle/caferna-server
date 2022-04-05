@@ -1,80 +1,57 @@
 const { GOODS } = require('../constants');
-const { Tile } = require('./tile');
+const { TileFactory } = require('../tile-factory');
 
 const BOARD_WIDTH = 4;
 const BOARD_HEIGHT = 6;
 
-class Cell {
-    constructor() {
-        this.tile = undefined;
-        this[GOODS.DOG] = 0;
-        this[GOODS.SHEEP] = 0;
-    }
-
-    placeTile(tile) {
-        // TODO: LOGIC TO VALIDATE
-        this.tile = tile;
-    }
-
-    placeAnimal(animalId) {
-        this[animalId] += 1;
-    }
-
-    get animalsToAscii() {
-        const dogs = 'd'.repeat(this[GOODS.DOG]);
-        const sheep = 's'.repeat(this[GOODS.SHEEP]);
-        return `${ dogs }${ sheep }`;
-    }
-
-    toAscii() {
-        return ` ${ this.tile.name }${ this.animalsToAscii.padEnd(3, ' ') } `;
-    }
-}
-
 exports.Board = class {
     constructor(player, initialConfiguration) {
         this.player = player;
-        this.cells = Array.from(
+        this.tiles = Array.from(
             Array(BOARD_WIDTH * BOARD_HEIGHT),
-            () => new Cell()
+            () => {}
         );
         initialConfiguration.forEach(
-            (tileName, index) => this.placeTile(new Tile(tileName), index)
+            (tileName, index) => {
+                const tile = TileFactory.create(player, tileName);
+                this.placeTile(tile, index)
+            }
         );
     }
 
     placeTile(tile, index) {
-        console.log("Board.placeTile", tile, index);
+        console.log("Board.placeTile", tile.name, index);
         // TODO: implement logic to avoid illegal moves
-        this.cells[index].placeTile(tile);
+        // TODO: some index has goods to the player... boar, food, ...
+        this.tiles[index] = tile;
     }
 
     placeAnimal(animalId, index) {
         console.log("Board.placeAnimal", animalId, index);
-        this.cells[index].placeAnimal(animalId);
+        this.tiles[index].placeAnimal(animalId);
     }
 
     numberOfAnimals(animalId) {
-        return this.cells.reduce(
-            (acc, cell) => acc + cell[animalId], 0
+        return this.tiles.reduce(
+            (acc, tile) => acc + tile.numberOfAnimals(animalId), 0
         );
     }
 
     serialize() {
         return ({
             playerId: this.player.id,
-            cells: this.cells
+            tiles: this.tiles
         });
     }
 
     toAscii() {
-        return this.cells
-            .map(cell => cell.toAscii())
-            .reduce((acc, asciiOfCell, index) => {
+        return this.tiles
+            .map(tile => tile.toAscii())
+            .reduce((acc, asciiOfTile, index) => {
                 if (index % BOARD_WIDTH === 0) {
-                    return [...acc, '\n', asciiOfCell];
+                    return [...acc, '\n', asciiOfTile];
                 }
-                return [...acc, asciiOfCell];
+                return [...acc, asciiOfTile];
             }, [])
             .join('');
     }
