@@ -24,14 +24,19 @@ exports.StartingPlayer = class extends Space {
      *
      * Expected spaceParams:
      * ```json
-     * {}
+     * {
+     *      actionParams: [
+     *          { index: 0 },
+     *          { index: 1 }
+     *      ]
+     * }
      * ```
      * @param {*} dwarf       dwarf to be used
      * @param {*} spaceParams params of the drift-mining space
      *
      */
-     use(dwarf, spaceParams) {
+    use(dwarf, spaceParams) {
         console.log('StartingPlayer.use', dwarf.id, spaceParams);
-        super.use(dwarf, {});
+        super.use(dwarf, spaceParams);
     }
 }

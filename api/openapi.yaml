@@ -423,6 +423,9 @@ components:
                 spaceId: starting-player
                 playerId: A
                 dwarfId: A1
+                spaceParams:
+                  - index: 0
+                  - index: 1
             Clearing:
               summary: Clearing use example
               value:
