@@ -157,6 +157,11 @@ exports.Player = class {
         );
     }
 
+    haveABaby() {
+        const baby = new Dwarf(this, `${ this.id }${ this.dwarfs.length + 1}`);
+        this.dwarfs.push(baby);
+    }
+
     // get isInitialPlayer() {
     //     return this._isInitialPlayer;
     // }
@@ -194,14 +199,16 @@ exports.Player = class {
     }
 
     _dwarfsSummaryTemplate() {
-        const dwarfSpace = dwarfId => {
-            const space = this.game.spaceManager.getSpaceByDwarfId(dwarfId);
-            return space ? `: ${ space.name }` : ': ';
-        };
+        // const dwarfSpace = dwarfId => {
+        //     const space = this.game.spaceManager.getSpaceByDwarfId(dwarfId);
+        //     return space ? `: ${ space.name }` : ': ';
+        // };
 
-        return `dwarfs: ${ this.dwarfs.map(
-            dwarf => `${ dwarf.id }[${ dwarf.weapon }]${ dwarfSpace(dwarf.id) }`
-        ).join('  ') }`;
+        // return `dwarfs: ${ this.dwarfs.map(
+        //     dwarf => `${ dwarf.id }[${ dwarf.weapon }]${ dwarfSpace(dwarf.id) }`
+        // ).join('  ') }`;
+
+        return `${ this.dwarfs.map( dwarf => dwarf.toAscii() ).join('  ') }`;
     }
 
     toAscii() {

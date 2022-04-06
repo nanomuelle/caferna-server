@@ -416,6 +416,17 @@ components:
                 items:
                   $ref: '#/components/schemas/ActionParameters'
           examples:
+            Growth:
+              summary: Growth
+              value:
+                spaceId: growth
+                playerId: A
+                dwarfId: A1
+                spaceParams:
+                  -
+                    index: 0
+                  -
+                    index: 1
             Excavation:
               summary: Excavation use example
               value:
