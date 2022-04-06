@@ -15,7 +15,6 @@ exports.ForestExploration = class extends Space {
         this.actions.push(action1);
     }
 
-
     /**
      * Use Forest exploration space
      *
@@ -23,7 +22,8 @@ exports.ForestExploration = class extends Space {
      * @param {*} spaceParams    // not used
      *
      */
-     use(dwarf, spaceParams) {
-        super.use(dwarf, { params: [ { index: 0 } ]} );
+    use(dwarf, spaceParams) {
+        console.log('ForestExploration.use', dwarf.id, spaceParams);
+        super.use(dwarf, spaceParams);
    }
 }

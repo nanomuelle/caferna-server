@@ -111,13 +111,9 @@ exports.Player = class {
 
     placeTweenTileByName(name, cell, direction) {
         console.log('Player.placeTweenTileByName', name, cell, direction);
-        const tiles = name.split('').map(tileName => new Tile(tileName));
+        const tiles = name.split('').map(tileName => TileFactory.create(this, tileName));
         this._placeTile(tiles[0], cell)
         this._placeTile(tiles[1], calculateNeighborCell(cell, direction));
-        // const tile1 = new Tile(TILE_NAME.C);
-        // player.mountain.placeTile(tile1, cell);
-        // const tile2 = new Tile(TILE_NAME.T);
-        // player.mountain.placeTile(tile2, calculateNeighborCell(cell, direction));
     }
 
     increaseWeapons() {
@@ -197,13 +193,24 @@ exports.Player = class {
         );
     }
 
+    _dwarfsSummaryTemplate() {
+        const dwarfSpace = dwarfId => {
+            const space = this.game.spaceManager.getSpaceByDwarfId(dwarfId);
+            return space ? `: ${ space.name }` : ': ';
+        };
+
+        return `dwarfs: ${ this.dwarfs.map(
+            dwarf => `${ dwarf.id }[${ dwarf.weapon }]${ dwarfSpace(dwarf.id) }`
+        ).join('  ') }`;
+    }
+
     toAscii() {
         const forestRows = this.forest.toAscii().split('\n');
         const mountainRows = this.mountain.toAscii().split('\n');
         return `
 ------------------------------------------------------------------------------------------
 Player ${ this.id }
-  dwarfs: ${ Object.keys(this.dwarfs).map(key => `${ this.dwarfs[key].id }[${ this.dwarfs[key].weapon }]`).join('  ') }
+  ${ this._dwarfsSummaryTemplate() }
   ${ Object.keys(this.goods).map(key => `${ key }: ${ this.goods[key] }`).join('  ') }
   ${ this._animalSummaryTemplate() }
 ${ forestRows.map( (forestRow, index) => `${ forestRow } ${ mountainRows[index]}`).join('\n') }

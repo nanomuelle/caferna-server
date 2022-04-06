@@ -23,15 +23,17 @@ exports.Logging = class extends Space {
      * Expected spaceParams:
      * ```json
      * {
-     *     spaceId: "",    // imitated space id
-     *     params: [       // spaceParams
-     *         { index: 0 },            // index of action to execute first
-     *         {
-     *             index: 1,            // index of action to execute second
-     *             params: {            // params of index 1 action (Expedition 3)
-     *                 rewards: []      // array of reward (see expedition action)
-     *             }
-     *         }
+     *     params: [
+     *          { index: 0 }, // index of action to execute first
+     *          {
+     *              index: 1, // index of action to execute second
+     *              actionParams: {
+     *                  rewards: [ // See expedition-action
+     *                      // example of 7h reward
+     *                      { id: '7h', params: { cell: 12, furnishId: 'dwelling' }},
+     *                  ]
+     *              }
+     *          }
      *     ]
      * }
      * ```

@@ -21,7 +21,7 @@ class DriftMining extends Space {
      * Use imitation space
      *
      * Expected spaceParams:
-     * ```
+     * ```json
      * {
      *     actionParams: [   // spaceParams
      *         { index: 0 }, // index of action to execute first

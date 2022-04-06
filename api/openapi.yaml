@@ -416,6 +416,29 @@ components:
                 items:
                   $ref: '#/components/schemas/ActionParameters'
           examples:
+            Excavation:
+              summary: Excavation use example
+              value:
+                spaceId: excavation
+                playerId: A
+                dwarfId: A1
+                spaceParams:
+                  -
+                    index: 0
+                  -
+                    index: 1
+                    actionParams:
+                      alternativeIndex: 0
+                      cell: 4
+                      direction: t
+            ForestExploration:
+              summary: Forest exploration use example
+              value:
+                spaceId: forest-exploration
+                playerId: A
+                dwarfId: A1
+                spaceParams:
+                  - index: 0
             Logging:
               summary: Logging use example
               value:
@@ -428,11 +451,11 @@ components:
                   -
                     index: 1
                     actionParams:
-                      rewards:
+                      rewards: # See expedition-action
                         # -
-                        #   id: '1+' # See expedition-action
+                        #   id: '1+'
                         # -
-                        #   id: '1W' # See expedition-action
+                        #   id: '1W'
                         # -
                         #   id: '1d'
                         #   params:
@@ -455,7 +478,6 @@ components:
                   -
                     index: 1
                     actionParams:
-                      name: CT
                       cell: 17
                       direction: t
             Imitation:

@@ -62,7 +62,11 @@ exports.SpaceManager = class {
         this.spaces.forEach(space => space.replenish());
     }
 
-    getById(id) {
-        return this.spaces.find(space => space.id === id);
+    getById(spaceId) {
+        return this.spaces.find(({ id }) => id === spaceId);
+    }
+
+    getSpaceByDwarfId(dwarfId) {
+        return this.spaces.find(({ dwarf }) => dwarf?.id === dwarfId);
     }
 }
