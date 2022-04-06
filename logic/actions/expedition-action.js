@@ -81,7 +81,7 @@ exports.ExpeditionAction = class extends AbstractAction {
             '12m': () => player.placeTileByName(TILE_NAME.m, params.cell),
             '12s': () => player.sow(params.crops),
             '14c': () => player.placeTileByName(TILE_NAME.C, params.cell),
-            '14B': () => player.breedFarmAnimals(type1, type2)
+            '14B': () => player.breedFarmAnimals(params.animals)
         }
 
         rewardExecutors[id]();

@@ -154,8 +154,11 @@ exports.Player = class {
         crops.forEach(crop => this.forest.sow(crop));
     }
 
-    breedFarmAnimals(type1, type2) {
+    breedFarmAnimals(animals) {
         console.log('Player.breedFarmAnimals TODO: STILL NOT IMPLEMENTED!!!!!');
+        animals.forEach(
+            ({id, board, cell}) => { this.placeAnimal(id, board, cell); }
+        );
     }
 
     // get isInitialPlayer() {
