@@ -9,7 +9,7 @@ const { Housework } = require('./entities/spaces/housework.js');
 const { Imitation } = require('./entities/spaces/imitation.js');
 const { Logging } = require('./entities/spaces/logging.js');
 const { OreMineConstruction } = require('./entities/spaces/ore-mine-construction.js');
-const { OreMine } = require('./entities/spaces/ore-mine.js');
+const { OreMining } = require('./entities/spaces/ore-mining.js');
 const { RubyMining } = require('./entities/spaces/ruby-mining.js');
 const { SheepFarming } = require('./entities/spaces/sheep-farming.js');
 const { SlashAndBurn } = require('./entities/spaces/slash-and-burn.js');
@@ -38,7 +38,7 @@ exports.SpaceManager = class {
             new Growth(),
             new Clearing(),
             new StartingPlayer(),
-            new OreMine(),
+            new OreMining(),
             new Sustenance(),
             new RubyMining(),
             new Housework(),

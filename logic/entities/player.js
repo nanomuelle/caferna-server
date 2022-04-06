@@ -1,4 +1,4 @@
-const { GOODS } = require('../constants.js');
+const { GOODS, TILE_NAME } = require('../constants.js');
 const { TileFactory } = require('../tile-factory.js');
 const { Dwarf } = require('./dwarf.js');
 const { Forest } = require('./forest.js');
@@ -75,6 +75,13 @@ exports.Player = class {
 
     get isStartingPlayer() {
         return this.game.startingPlayerId === this.id;
+    }
+
+    numberOfMineralMines() {
+        return this.mountain.tiles.reduce(
+            (acc, { name }) => name === TILE_NAME.O ? acc + 1 : acc,
+            0
+        );
     }
 
     numberOfAnimals(animalId) {

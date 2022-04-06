@@ -417,6 +417,15 @@ components:
                 items:
                   $ref: '#/components/schemas/ActionParameters'
           examples:
+            OreMining:
+              summary: Ore Mining use example
+              value:
+                spaceId: ore-mining
+                playerId: A
+                dwarfId: A1
+                spaceParams:
+                  - index: 0
+                  - index: 1
             StartingPlayer:
               summary: Starting Player use example
               value:

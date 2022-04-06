@@ -4,9 +4,9 @@ const { Space } = require('./space.js');
 const { GoodsAction } = require('../../actions/goods-action.js');
 const { MineralMineAction } = require('../../actions/mineral-mine-action.js');
 
-exports.OreMine = class extends Space {
+exports.OreMining = class extends Space {
     constructor() {
-        super('ore-mine', 'OreMine', NEXUS.AND_OR);
+        super('ore-mining', 'OreMining', NEXUS.AND_OR);
 
         const action1 = new GoodsAction();
         action1.goods.push(new StockableGood(GOODS.ORE, 3, 2));
@@ -16,5 +16,26 @@ exports.OreMine = class extends Space {
 
         this.actions.push(action1);
         this.actions.push(action2);
+    }
+
+    /**
+     * Use Ore Mining space
+     *
+     * Expected spaceParams:
+     * ```json
+     * {
+     *     actionParams: [  // spaceParams
+     *         { index: 0 },
+     *         { index: 1 }
+     *     ]
+     * }
+     * ```
+     * @param {*} dwarf       dwarf to be used
+     * @param {*} spaceParams params of the drift-mining space
+     *
+     */
+     use(dwarf, spaceParams) {
+        console.log('OreMining.use', dwarf.id, spaceParams);
+        super.use(dwarf, spaceParams);
     }
 }

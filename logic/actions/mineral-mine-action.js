@@ -10,7 +10,7 @@ exports.MineralMineAction = class extends AbstractAction {
         const { player } = dwarf;
 
         player.addGood(
-            new FixedGood(GOODS.ORE, ORE_PER_MINE * player.numOfMineralMines())
+            new FixedGood(GOODS.ORE, ORE_PER_MINE * player.numberOfMineralMines())
         );
     }
 }

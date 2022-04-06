@@ -18,7 +18,7 @@ class DriftMining extends Space {
     }
 
     /**
-     * Use imitation space
+     * Use DriftMining space
      *
      * Expected spaceParams:
      * ```json
