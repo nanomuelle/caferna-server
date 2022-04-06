@@ -170,6 +170,7 @@ components:
       required: true
       schema:
         type: string
+      example: A
     dwarfId:
       name: dwarfId
       in: path
@@ -416,6 +417,12 @@ components:
                 items:
                   $ref: '#/components/schemas/ActionParameters'
           examples:
+            StartingPlayer:
+              summary: Starting Player use example
+              value:
+                spaceId: starting-player
+                playerId: A
+                dwarfId: A1
             Clearing:
               summary: Clearing use example
               value:

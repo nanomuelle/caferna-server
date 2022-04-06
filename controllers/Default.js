@@ -44,6 +44,18 @@ module.exports.listGamePlayers = function listGamePlayers (req, res, next, gameI
         });
 };
 
+module.exports.getPlayer = function getPlayer (req, res, next, gameId, playerId) {
+    Default.getPlayer(gameId, playerId)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            //res.send(405, response);
+            res.status(405).send(response)
+            // utils.writeJson(res, response);
+        });
+};
+
 module.exports.useSpace = function useSpace (req, res, next, body, gameId) {
     Default.useSpace(gameId, body)
         .then(function (response) {

@@ -121,6 +121,30 @@ exports.listGames = function () {
     });
 };
 
+exports.getPlayer = function (gameId, playerId) {
+    console.log('DefaultService.getPlayer', gameId, playerId);
+
+    return new Promise(function (resolve, reject) {
+        const gm = getGameById(gameId);
+        if (!gm) {
+            reject(`Game #${ gameId } not found`);
+            return;
+        }
+        console.log('  gameId ok', gameId);
+
+        const player = gm.getPlayerById(playerId);
+        if (!player) {
+            reject(`Player #${ playerId } not found in game #${ gameId }`);
+            return;
+        }
+        console.log('  player ok', playerId);
+
+        // response
+        resolve(createPlayerDetailResponse(player));
+
+        console.log(player.toAscii());
+    });
+}
 /**
  * Use space
  */

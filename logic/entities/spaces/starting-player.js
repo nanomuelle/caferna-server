@@ -3,7 +3,7 @@ const { FixedGood } = require('../fixed-good.js');
 const { GOODS } = require('../../constants.js');
 const { Space } = require('./space.js');
 const { GoodsAction } = require('../../actions/goods-action.js');
-const { InitialPlayerAction } = require('../../actions/initial-player-action.js');
+const { StartingPlayerAction } = require('../../actions/starting-player-action.js');
 
 exports.StartingPlayer = class extends Space {
     constructor() {
@@ -13,9 +13,25 @@ exports.StartingPlayer = class extends Space {
         action1.goods.push(new StockableGood(GOODS.FOOD, 1, 1));
         action1.goods.push(new FixedGood(GOODS.RUBY, 1));
 
-        const action2 = new InitialPlayerAction();
+        const action2 = new StartingPlayerAction();
 
         this.actions.push(action1);
         this.actions.push(action2);
+    }
+
+    /**
+     * Use Starting Player space
+     *
+     * Expected spaceParams:
+     * ```json
+     * {}
+     * ```
+     * @param {*} dwarf       dwarf to be used
+     * @param {*} spaceParams params of the drift-mining space
+     *
+     */
+     use(dwarf, spaceParams) {
+        console.log('StartingPlayer.use', dwarf.id, spaceParams);
+        super.use(dwarf, {});
     }
 }

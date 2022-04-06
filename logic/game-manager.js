@@ -1,3 +1,4 @@
+const { Dwarf } = require('./entities/dwarf.js');
 const { Player } = require('./entities/player.js');
 const { SpaceManager } = require('./space-manager.js');
 
@@ -16,10 +17,10 @@ exports.GameManager = class {
         this.id = id;
 
         this.players = [
-            new Player(this, 'A', '#ff4000', 1, true),
-            new Player(this, 'B', '#0040ff', 1, false),
-            new Player(this, 'C', '#ffff00', 2, false),
-            new Player(this, 'D', '#00ff00', 3, false),
+            new Player(this, 'A', '#ff4000', 1),
+            new Player(this, 'B', '#0040ff', 1),
+            new Player(this, 'C', '#ffff00', 2),
+            new Player(this, 'D', '#00ff00', 3)
         ];
 
         this.spaceManager.init();
@@ -29,7 +30,7 @@ exports.GameManager = class {
 
         this.roundNumber = 0;
         this.turnPlayerIndex = 0;
-        this.initialPlayerIndex = 0;
+        this.startingPlayerIndex = 0;
         // this.selectedPlayerIndex = 0;
         this.ready = true;
     }
@@ -38,8 +39,8 @@ exports.GameManager = class {
         return this.players[this.turnPlayerIndex].id;
     }
 
-    get initialPlayerId() {
-        return this.players[this.initialPlayerIndex].id;
+    get startingPlayerId() {
+        return this.players[this.startingPlayerIndex].id;
     }
 
     // proxy 
@@ -55,14 +56,9 @@ exports.GameManager = class {
         return this.players.find(player => player.id === playerId);
     }
 
-    setInitialPlayer(playerId) {
-        this.players.forEach(player => {
-            if (player.id === playerId) {
-                player.setInitialPlayer();
-            } else {
-                player.removeInitialPlayer();
-            }
-        });
+    setStartingPlayer(playerId) {
+        const player = this.players.find(({id}) => id === playerId);
+        this.startingPlayerIndex = this.players.indexOf(player);
     }
 
     discoverPhase() {
@@ -71,12 +67,20 @@ exports.GameManager = class {
     }
 
     replenishPhase() {
+        // new born dwarfs => adult
+        this.players.forEach(
+            player => player.dwarfs.forEach(
+                dwarf => dwarf.state = Dwarf.STATE.ADULT
+            )
+        );
+
+        // replenish spaces
         this.spaceManager.spaces.forEach(space => space.replenish());
     }
 
     workdayPhase() {
-        // this.selectedPlayerIndex = this.initialPlayerIndex;
-        this.turnPlayerIndex = this.initialPlayerIndex;
+        // this.selectedPlayerIndex = this.startingPlayerIndex;
+        this.turnPlayerIndex = this.startingPlayerIndex;
     }
 
     nextPlayerTurn() {

@@ -23,7 +23,7 @@ const calculateNeighborCell = (cell, direction) => {
 };
 
 exports.Player = class {
-    constructor(game, id, color, food, isInitial) {
+    constructor(game, id, color, food) {
         this.game = game;
 
         this.id = id;
@@ -62,16 +62,19 @@ exports.Player = class {
             // [GOODS.NEW_BORN]: 0,
         };
 
-        this.dwarfs = [
-            new Dwarf(this, `${ this.id }1`),
-            new Dwarf(this, `${ this.id }2`)
-        ];
-        this.dwarfs.forEach(dwarf => dwarf.state = Dwarf.STATE.READY);
+        this.dwarfs = [];
+        this.haveABaby();
+        this.haveABaby();
+        // this.dwarfs.forEach(dwarf => dwarf.state = Dwarf.STATE.READY);
 
         this.forest = new Forest(this);
         this.mountain = new Mountain(this);
 
 //        this._isInitialPlayer = isInitial;
+    }
+
+    get isStartingPlayer() {
+        return this.game.startingPlayerId === this.id;
     }
 
     numberOfAnimals(animalId) {
@@ -216,7 +219,7 @@ exports.Player = class {
         const mountainRows = this.mountain.toAscii().split('\n');
         return `
 ------------------------------------------------------------------------------------------
-Player ${ this.id }
+Player ${ this.id } ${ this.isStartingPlayer ? 'Starting Player' : '' }
   ${ this._dwarfsSummaryTemplate() }
   ${ Object.keys(this.goods).map(key => `${ key }: ${ this.goods[key] }`).join('  ') }
   ${ this._animalSummaryTemplate() }
